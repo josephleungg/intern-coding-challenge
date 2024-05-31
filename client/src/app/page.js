@@ -1,9 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [country, setCountry] = useState('');
   const [formErrorMsgs, setFormErrorMsgs] = useState({});
+  const [formVals, setFormVals] = useState({});
+  const [postMessage, setPostMessage] = useState({});
 
   // handling the country change
   const handleCountryChange = (e) => {
@@ -55,17 +57,39 @@ export default function Home() {
     
     // checking if the form is valid to submit or sending the form errors to the user
     if(Object.keys(formErrors).length == 0){
-      setFormErrorMsgs(formErrors);
-      window.location.href = '/success';
+      setFormErrorMsgs({"message": "Form submitted successfully"});
+      setFormVals(formValues);
     }else{
       // setting the form errors
       setFormErrorMsgs(formErrors);
     }
-
   };
+
+  // calling post api to submit form data to the database
+  useEffect(() => {
+    if(formErrorMsgs.message){
+      console.log("works")
+      fetch('http://localhost:5000/api/form-to-db', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formVals),
+      })
+      .then(response => response.json())
+      .then(data => {
+        setPostMessage(data);
+      })
+      .catch((err) => {
+        console.log('error submitting form data', err)
+      })
+    }
+  }, [formErrorMsgs, formVals])
 
   return (
     <main>
+      {!postMessage.message ? 
+      (
       <div className='form-div flex items-center justify-center h-screen'>
         <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center rounded-lg bg-sky-300 shadow-xl'>
           <label htmlFor='fname'>First Name</label>
@@ -210,6 +234,12 @@ export default function Home() {
 
         </form>
       </div>
+      ) : 
+      (
+        <div className='flex items-center justify-center h-screen'>
+          <p>{postMessage.message}</p>
+        </div>
+      )}
     </main>
   );
 }
