@@ -14,7 +14,13 @@ CREATE TABLE formdata (
 );
 
 Since I used javascript for both frontend and backend, I would most likely use a SQL library such as mysql2
-and use the body JSON data for the insert values but this is just an example insert statement
+and use the body JSON data for the insert values. I would also hash the password first like how I did in
+server.js to make it more secure
+
+INSERT INTO formdata (fname, lname, email, password, phone, address, city, country, province)
+VALUES (req.body.fname, req.body.lname, req.body.email, req.body.password, req.body.phone, req.body.address, req.body.city, req.body.country, req.body.province)
+
+Example form data that would be submitted and inserted
 
 INSERT INTO formdata (fname, lname, email, password, phone, address, city, country, province)
 VALUES ('Joseph', 'Leung', 'leung.joseph2@gmail.com', 'test123', '4163889088', '123 address', 'Toronto', 'Canada', 'Ontario');
