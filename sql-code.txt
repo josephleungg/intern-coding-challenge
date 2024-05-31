@@ -1,0 +1,20 @@
+First need to create the table for the user's form data and then we can insert user's data into the table
+
+CREATE TABLE formdata (
+    fname VARCHAR(255) NOT NULL,
+    lname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    province VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Since I used javascript for both frontend and backend, I would most likely use a SQL library such as mysql2
+and use the body JSON data for the insert values but this is just an example insert statement
+
+INSERT INTO formdata (fname, lname, email, password, phone, address, city, country, province)
+VALUES ('Joseph', 'Leung', 'leung.joseph2@gmail.com', 'test123', '4163889088', '123 address', 'Toronto', 'Canada', 'Ontario');
